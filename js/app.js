@@ -458,8 +458,13 @@ const routes = {
     '#/staff/new': renderAddStaff
 };
 
+// --- INITIALIZE ---
+if (document.readyState === 'complete' || document.readyState === 'interactive') {
+    handleRoute();
+} else {
+    document.addEventListener('DOMContentLoaded', handleRoute);
+}
 window.addEventListener('hashchange', handleRoute);
-document.addEventListener('DOMContentLoaded', handleRoute);
 
 document.body.addEventListener('click', e => {
     const linkElement = e.target.closest('[data-link]');

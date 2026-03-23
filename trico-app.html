@@ -324,6 +324,66 @@ a:hover {
     flex-direction: column;
     min-height: 100vh;
     background: radial-gradient(ellipse at top left, rgba(30, 41, 59, 0.5) 0%, transparent 60%);
+    transition: margin-left var(--transition-smooth);
+}
+
+/* --- RESPONSIVE OVERRIDES --- */
+
+/* Mobile Menu Button - Hidden on Desktop */
+.menu-toggle {
+    display: none;
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    cursor: pointer;
+    padding: 0.5rem;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Sidebar Overlay for Mobile */
+.sidebar-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(15, 23, 42, 0.6);
+    backdrop-filter: blur(4px);
+    z-index: 45;
+}
+
+@media (max-width: 1024px) {
+    .grid-cards { grid-template-columns: repeat(2, 1fr); }
+    .sidebar { width: 240px; }
+    .main-content { margin-left: 240px; }
+}
+
+@media (max-width: 768px) {
+    .sidebar {
+        transform: translateX(-100%);
+        transition: transform var(--transition-smooth);
+        width: 280px;
+    }
+    .sidebar.open { transform: translateX(0); }
+    .sidebar.open + .sidebar-overlay { display: block; }
+    
+    .main-content { margin-left: 0; }
+    
+    .top-header { padding: 0 1rem; }
+    .header-search { display: none; } /* Hide search on mobile header to save space */
+    
+    .menu-toggle { display: flex; }
+    
+    .grid-cards { grid-template-columns: 1fr; }
+    
+    .stat-card { padding: 1.25rem; }
+    
+    div[style*="grid-template-columns: 2fr 1fr"] {
+        grid-template-columns: 1fr !important;
+    }
+    
+    .glass-card { padding: 1.5rem; }
+    
+    .auth-container .glass-card { padding: 1.5rem; }
 }
 
 /* Header Styling */
@@ -438,6 +498,13 @@ a:hover {
 
     <!-- Application Script -->
     <script>
+window.toggleSidebar = function() {
+    document.getElementById('app-sidebar').classList.toggle('open');
+};
+window.closeSidebar = function() {
+    document.getElementById('app-sidebar').classList.remove('open');
+};
+
 // --- STATE & DATA ---
 const mockEmployees = [
     { id: 'EMP001', name: 'Kamal Silva', nic: '19851234567V', role: 'Supervisor', site: 'Office Block A', status: 'Active', payroll: { basic: 45000, otHours: 12, otRate: 250, deductions: 1500 } },
@@ -829,10 +896,10 @@ function renderLayout(contentHTML, activeMenu = 'dashboard') {
     return `
         <div class="app-container">
             <!-- Navigation Sidebar -->
-            <aside class="sidebar">
+            <aside class="sidebar" id="app-sidebar">
                 <div class="sidebar-header">
                     <div style="width: 36px; height: 36px; background: transparent; border-radius: 5px; display: inline-flex; align-items: center; justify-content: center; overflow: hidden;">
-                        <img src="data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Cdefs%3E%3ClinearGradient id='g1' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%2338bdf8'/%3E%3Cstop offset='1' stop-color='%230284c7'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath d='M 90 25 A 75 75 0 0 1 175 110' fill='none' stroke='url(%23g1)' stroke-width='14' stroke-linecap='round'/%3E%3Cpath d='M 110 175 A 75 75 0 0 1 25 90' fill='none' stroke='%230369a1' stroke-width='14' stroke-linecap='round'/%3E%3Ctext x='100' y='132' font-family='%22Helvetica Neue%22, sans-serif' font-size='88' font-weight='900' fill='%230c4a6e' text-anchor='middle' letter-spacing='-4'%3EJS%3C/text%3E%3C/svg%3E" alt="JS Logo" style="width: 100%; height: 100%; object-fit: contain;" />JS</h3>'" />
+                        <img src="data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Cdefs%3E%3ClinearGradient id='g1' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%2338bdf8'/%3E%3Cstop offset='1' stop-color='%230284c7'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath d='M 90 25 A 75 75 0 0 1 175 110' fill='none' stroke='url(%23g1)' stroke-width='14' stroke-linecap='round'/%3E%3Cpath d='M 110 175 A 75 75 0 0 1 25 90' fill='none' stroke='%230369a1' stroke-width='14' stroke-linecap='round'/%3E%3Ctext x='100' y='132' font-family='%22Helvetica Neue%22, sans-serif' font-size='88' font-weight='900' fill='%230c4a6e' text-anchor='middle' letter-spacing='-4'%3EJS%3C/text%3E%3C/svg%3E" alt="JS Logo" style="width: 100%; height: 100%; object-fit: contain;" />
                     </div>
                     <h3 style="font-size: 1.25rem; font-weight: 700; margin-left: 0.5rem; letter-spacing: -0.5px;">JS Service</h3>
                 </div>
@@ -840,17 +907,17 @@ function renderLayout(contentHTML, activeMenu = 'dashboard') {
                 <nav class="sidebar-nav">
                     <p style="font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase; font-weight: 600; letter-spacing: 0.5px; padding: 0 1rem; margin-top: 0.5rem; margin-bottom: 0.25rem;">Main</p>
                     
-                    <a href="#/dashboard" data-link class="nav-item ${activeMenu === 'dashboard' ? 'active' : ''}">
+                    <a href="#/dashboard" onclick="window.closeSidebar()" data-link class="nav-item ${activeMenu === 'dashboard' ? 'active' : ''}">
                         <i data-lucide="layout-dashboard" style="width: 20px; height: 20px;"></i>
                         <span>Dashboard</span>
                     </a>
-                    <a href="#/staff" data-link class="nav-item ${activeMenu === 'staff' ? 'active' : ''}">
+                    <a href="#/staff" onclick="window.closeSidebar()" data-link class="nav-item ${activeMenu === 'staff' ? 'active' : ''}">
                         <i data-lucide="users" style="width: 20px; height: 20px;"></i>
                         <span>Staff Register</span>
                     </a>
                     <p style="font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase; font-weight: 600; letter-spacing: 0.5px; padding: 0 1rem; margin-top: 1.5rem; margin-bottom: 0.25rem;">Finance</p>
                     
-                    <a href="#/payroll" data-link class="nav-item ${activeMenu === 'payroll' ? 'active' : ''}">
+                    <a href="#/payroll" onclick="window.closeSidebar()" data-link class="nav-item ${activeMenu === 'payroll' ? 'active' : ''}">
                         <i data-lucide="calculator" style="width: 20px; height: 20px;"></i>
                         <span>Payroll & Salary</span>
                     </a>
@@ -861,27 +928,33 @@ function renderLayout(contentHTML, activeMenu = 'dashboard') {
                         <i data-lucide="box" style="width: 20px; height: 20px;"></i>
                         <span>Inventory</span>
                     </a>
-                    <a href="#/settings" data-link class="nav-item ${activeMenu === 'settings' ? 'active' : ''}">
+                    <a href="#/settings" onclick="window.closeSidebar()" data-link class="nav-item ${activeMenu === 'settings' ? 'active' : ''}">
                         <i data-lucide="settings" style="width: 20px; height: 20px;"></i>
                         <span>Admin Settings</span>
                     </a>
                 </nav>
                 
                 <div class="sidebar-footer" style="padding-top: 1rem; border-top: 1px solid var(--border-glass);">
-                    <a href="#/" data-link class="nav-item text-danger">
+                    <a href="#/" onclick="window.closeSidebar()" data-link class="nav-item text-danger">
                         <i data-lucide="log-out" style="width: 20px; height: 20px;"></i>
                         <span>Sign Out</span>
                     </a>
                 </div>
             </aside>
+            <div class="sidebar-overlay" onclick="window.closeSidebar()"></div>
 
             <!-- Main Content Area Wrapper -->
             <main class="main-content">
                 <!-- Top Header -->
                 <header class="top-header">
-                    <div class="header-search">
-                        <i data-lucide="search" class="input-icon" style="left: 0.75rem;"></i>
-                        <input type="text" onkeyup="if(window.location.hash !== '#/staff' && event.key === 'Enter') { window.location.hash = '#/staff'; setTimeout(() => { const v=this.value.toLowerCase(); document.querySelectorAll('.staff-row').forEach(r => r.style.display = r.dataset.search.includes(v) ? '' : 'none'); }, 50); } else if (window.location.hash === '#/staff' || window.location.hash === '') { const v=this.value.toLowerCase(); document.querySelectorAll('.staff-row').forEach(r => r.style.display = r.dataset.search.includes(v) ? '' : 'none'); }" placeholder="Search Staff Directory..." class="search-input" />
+                    <div style="display: flex; align-items: center; gap: 1rem;">
+                        <button class="menu-toggle" onclick="window.toggleSidebar()">
+                            <i data-lucide="menu" style="width: 24px; height: 24px;"></i>
+                        </button>
+                        <div class="header-search">
+                            <i data-lucide="search" class="input-icon" style="left: 0.75rem;"></i>
+                            <input type="text" onkeyup="if(window.location.hash !== '#/staff' && event.key === 'Enter') { window.location.hash = '#/staff'; setTimeout(() => { const v=this.value.toLowerCase(); document.querySelectorAll('.staff-row').forEach(r => r.style.display = r.dataset.search.includes(v) ? '' : 'none'); }, 50); } else if (window.location.hash === '#/staff' || window.location.hash === '') { const v=this.value.toLowerCase(); document.querySelectorAll('.staff-row').forEach(r => r.style.display = r.dataset.search.includes(v) ? '' : 'none'); }" placeholder="Search Staff Directory..." class="search-input" />
+                        </div>
                     </div>
                     
                     <div class="header-actions">
@@ -1431,8 +1504,13 @@ const routes = {
     '#/settings': renderSettings
 };
 
+// --- INITIALIZE ---
+if (document.readyState === 'complete' || document.readyState === 'interactive') {
+    handleRoute();
+} else {
+    document.addEventListener('DOMContentLoaded', handleRoute);
+}
 window.addEventListener('hashchange', handleRoute);
-document.addEventListener('DOMContentLoaded', handleRoute);
 
 document.body.addEventListener('click', e => {
     const linkElement = e.target.closest('[data-link]');
