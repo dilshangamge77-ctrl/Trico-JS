@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>JS Janitorial Service | Management System</title>
+    <title>Trico Janitorial Service | Management System</title>
     <!-- Modern Font: Outfit -->
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <!-- Lucide Icons -->
@@ -522,6 +522,36 @@ window.changeCalendarMonth = function(offset) {
     window.renderCalendar(window.currentCalDate.getFullYear(), window.currentCalDate.getMonth());
 };
 
+const initialInventory = [
+    { id: 'INV001', name: 'Floor Cleaner (5L)', category: 'Consumables', quantity: 15, unit: 'Liters', minThreshold: 5, lastRestocked: '2026-03-01' },
+    { id: 'INV002', name: 'Microfiber Cloths', category: 'Equipment', quantity: 45, unit: 'Pieces', minThreshold: 10, lastRestocked: '2026-02-15' },
+    { id: 'INV003', name: 'Dish Soap', category: 'Consumables', quantity: 4, unit: 'Bottles', minThreshold: 5, lastRestocked: '2026-03-10' },
+    { id: 'INV004', name: 'Safety Goggles', category: 'Safety', quantity: 12, unit: 'Pairs', minThreshold: 2, lastRestocked: '2026-01-20' },
+    { id: 'INV005', name: 'Heavy Duty Mops', category: 'Equipment', quantity: 2, unit: 'Pieces', minThreshold: 3, lastRestocked: '2026-03-05' }
+];
+
+if (!localStorage.getItem('inventory_data')) {
+    localStorage.setItem('inventory_data', JSON.stringify(initialInventory));
+}
+
+window.getInventory = function() {
+    return JSON.parse(localStorage.getItem('inventory_data'));
+};
+
+const initialCashBook = [
+    { date: '2026-03-01', description: 'ආරම්භක ශේෂය', income: 50000, expense: 0 },
+    { date: '2026-03-02', description: 'සේවා ගාස්තු ලැබීම', income: 15000, expense: 0 },
+    { date: '2026-03-03', description: 'පිරිසිදු කිරීමේ ද්‍රව්‍ය මිලදී ගැනීම', income: 0, expense: 4500 }
+];
+
+if (!localStorage.getItem('cashbook_data')) {
+    localStorage.setItem('cashbook_data', JSON.stringify(initialCashBook));
+}
+
+window.getCashBook = function() {
+    return JSON.parse(localStorage.getItem('cashbook_data'));
+};
+
 window.openDateNote = function(dateStr, isHoliday, holidayName) {
     const noteKey = 'note_' + dateStr;
     const existing = localStorage.getItem(noteKey) || '';
@@ -755,7 +785,7 @@ window.downloadPayslip = function(id) {
         </head>
         <body>
             <div class="header">
-                <h1>JS Janitorial Service</h1>
+                <h1>Trico Janitorial Service</h1>
                 <p style="margin: 0; color: #64748b; font-size: 13px;">No 79 Sumithrarama Mawatha, Kotahena, Colombo 13</p>
                 <p style="margin-top: 15px; font-weight: bold; color: #333;">Monthly Salary Statement - March 2026</p>
             </div>
@@ -899,9 +929,9 @@ function renderLayout(contentHTML, activeMenu = 'dashboard') {
             <aside class="sidebar" id="app-sidebar">
                 <div class="sidebar-header">
                     <div style="width: 36px; height: 36px; background: transparent; border-radius: 5px; display: inline-flex; align-items: center; justify-content: center; overflow: hidden;">
-                        <img src="data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Cdefs%3E%3ClinearGradient id='g1' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%2338bdf8'/%3E%3Cstop offset='1' stop-color='%230284c7'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath d='M 90 25 A 75 75 0 0 1 175 110' fill='none' stroke='url(%23g1)' stroke-width='14' stroke-linecap='round'/%3E%3Cpath d='M 110 175 A 75 75 0 0 1 25 90' fill='none' stroke='%230369a1' stroke-width='14' stroke-linecap='round'/%3E%3Ctext x='100' y='132' font-family='%22Helvetica Neue%22, sans-serif' font-size='88' font-weight='900' fill='%230c4a6e' text-anchor='middle' letter-spacing='-4'%3EJS%3C/text%3E%3C/svg%3E" alt="JS Logo" style="width: 100%; height: 100%; object-fit: contain;" />
+                        <img src="data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 220'%3E%3Cdefs%3E%3ClinearGradient id='g1' x1='0.1' y1='0' x2='0.9' y2='1'%3E%3Cstop offset='0%25' stop-color='%232B50E8'/%3E%3Cstop offset='100%25' stop-color='%23E82B50'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath d='M 82 28 L 158 28' stroke='url(%23g1)' stroke-width='18' stroke-linecap='round' fill='none'/%3E%3Cpath d='M 158 28 L 158 158 Q 158 202 112 207 Q 72 212 56 186' stroke='url(%23g1)' stroke-width='18' stroke-linecap='round' fill='none'/%3E%3Cpath d='M 52 70 Q 48 40 78 30 Q 114 18 148 42 Q 174 62 150 90 Q 133 110 106 118 Q 78 126 64 146 Q 50 166 66 184 Q 83 202 116 202 Q 150 202 166 184' stroke='url(%23g1)' stroke-width='18' stroke-linecap='round' fill='none'/%3E%3C/svg%3E" alt="JS Service Logo" style="width: 100%; height: 100%; object-fit: contain;" />
                     </div>
-                    <h3 style="font-size: 1.25rem; font-weight: 700; margin-left: 0.5rem; letter-spacing: -0.5px;">JS Service</h3>
+                    <h3 style="font-size: 1.15rem; font-weight: 700; margin-left: 0.5rem; letter-spacing: -0.5px; line-height: 1.1;">Trico Janitorial</h3>
                 </div>
                 
                 <nav class="sidebar-nav">
@@ -924,9 +954,13 @@ function renderLayout(contentHTML, activeMenu = 'dashboard') {
                     
                     <p style="font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase; font-weight: 600; letter-spacing: 0.5px; padding: 0 1rem; margin-top: 1.5rem; margin-bottom: 0.25rem;">Operations</p>
                     
-                    <a href="#" class="nav-item">
+                    <a href="#/inventory" data-link class="nav-item ${activeMenu === 'inventory' ? 'active' : ''}">
                         <i data-lucide="box" style="width: 20px; height: 20px;"></i>
                         <span>Inventory</span>
+                    </a>
+                    <a href="#/cashbook" data-link class="nav-item ${activeMenu === 'cashbook' ? 'active' : ''}">
+                        <i data-lucide="book-open" style="width: 20px; height: 20px;"></i>
+                        <span>මුදල් පොත</span>
                     </a>
                     <a href="#/settings" onclick="window.closeSidebar()" data-link class="nav-item ${activeMenu === 'settings' ? 'active' : ''}">
                         <i data-lucide="settings" style="width: 20px; height: 20px;"></i>
@@ -993,9 +1027,9 @@ function renderLogin() {
             <div class="glass-card animate-slide-up" style="width: 100%; max-width: 420px;">
                 <div style="text-align: center; margin-bottom: 2rem;">
                     <div style="width: 80px; height: 80px; background: white; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; margin-bottom: 1.25rem; overflow: hidden; border: 2px solid var(--primary); box-shadow: 0 0 15px rgba(6,182,212,0.3);">
-                        <img src="data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Cdefs%3E%3ClinearGradient id='g1' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%2338bdf8'/%3E%3Cstop offset='1' stop-color='%230284c7'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath d='M 90 25 A 75 75 0 0 1 175 110' fill='none' stroke='url(%23g1)' stroke-width='14' stroke-linecap='round'/%3E%3Cpath d='M 110 175 A 75 75 0 0 1 25 90' fill='none' stroke='%230369a1' stroke-width='14' stroke-linecap='round'/%3E%3Ctext x='100' y='132' font-family='%22Helvetica Neue%22, sans-serif' font-size='88' font-weight='900' fill='%230c4a6e' text-anchor='middle' letter-spacing='-4'%3EJS%3C/text%3E%3C/svg%3E" alt="JS Logo" style="width: 100%; height: 100%; object-fit: contain;" />JS</h1>'" />
+                        <img src="data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 260'%3E%3Cdefs%3E%3ClinearGradient id='g1' x1='0.1' y1='0' x2='0.9' y2='1'%3E%3Cstop offset='0%25' stop-color='%232B50E8'/%3E%3Cstop offset='100%25' stop-color='%23E82B50'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath d='M 82 28 L 158 28' stroke='url(%23g1)' stroke-width='18' stroke-linecap='round' fill='none'/%3E%3Cpath d='M 158 28 L 158 158 Q 158 202 112 207 Q 72 212 56 186' stroke='url(%23g1)' stroke-width='18' stroke-linecap='round' fill='none'/%3E%3Cpath d='M 52 70 Q 48 40 78 30 Q 114 18 148 42 Q 174 62 150 90 Q 133 110 106 118 Q 78 126 64 146 Q 50 166 66 184 Q 83 202 116 202 Q 150 202 166 184' stroke='url(%23g1)' stroke-width='18' stroke-linecap='round' fill='none'/%3E%3Ctext x='100' y='250' font-family='Arial Black,sans-serif' font-size='48' font-weight='900' fill='%232D1060' text-anchor='middle'%3EJS%3C/text%3E%3C/svg%3E" alt="JS Service Logo" style="width: 100%; height: 100%; object-fit: contain;" />
                     </div>
-                    <h2 style="font-size: 1.75rem; letter-spacing: -0.5px; margin-bottom: 0.5rem;">JS Janitorial</h2>
+                    <h2 style="font-size: 1.75rem; letter-spacing: -0.5px; margin-bottom: 0.5rem;">Trico Janitorial Service</h2>
                     <p style="color: var(--text-muted); font-size: 0.95rem;">Enter your credentials to access the system</p>
                 </div>
                 
@@ -1493,6 +1527,343 @@ function renderSettings() {
     });
 }
 
+function renderInventory() {
+    const root = document.getElementById('app-root');
+    const items = window.getInventory();
+    const lowStockCount = items.filter(i => i.quantity <= i.minThreshold).length;
+
+    const tableRows = items.map(item => {
+        const isLow = item.quantity <= item.minThreshold;
+        const statusText = item.quantity === 0 ? 'Out of Stock' : (isLow ? 'Low Stock' : 'In Stock');
+        const statusColor = item.quantity === 0 ? 'var(--danger)' : (isLow ? 'var(--warning)' : 'var(--success)');
+        const statusBg = item.quantity === 0 ? 'rgba(239,68,68,0.1)' : (isLow ? 'rgba(245,158,11,0.1)' : 'rgba(16,185,129,0.1)');
+
+        return `
+            <tr class="inventory-row" data-category="${item.category}" style="border-bottom: 1px solid var(--border-glass);">
+                <td style="padding: 1.25rem 0.5rem; font-weight: 600;">${item.id}</td>
+                <td style="padding: 1.25rem 0.5rem; color: var(--text-main); font-weight: 500;">${item.name}</td>
+                <td style="padding: 1.25rem 0.5rem; color: var(--text-muted); font-size: 0.85rem;">${item.category}</td>
+                <td style="padding: 1.25rem 0.5rem; font-weight: 700;">${item.quantity} ${item.unit}</td>
+                <td style="padding: 1.25rem 0.5rem;">
+                    <span style="background: ${statusBg}; color: ${statusColor}; padding: 0.25rem 0.6rem; border-radius: 4px; font-size: 0.75rem; font-weight: 600; border: 1px solid ${statusColor}44;">
+                        ${statusText}
+                    </span>
+                </td>
+                <td style="padding: 1.25rem 0.5rem; color: var(--text-muted); font-size: 0.85rem;">${item.lastRestocked}</td>
+                <td style="padding: 1.25rem 0.5rem; text-align: right;">
+                    <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 0.25rem;">
+                        <button class="icon-btn" onclick="window.updateStock('${item.id}', 1)" title="Increase Stock" style="padding: 0.2rem;"><i data-lucide="plus-circle" style="width: 18px; height: 18px;"></i></button>
+                        <button class="icon-btn" onclick="window.updateStock('${item.id}', -1)" title="Decrease Stock" style="padding: 0.2rem;"><i data-lucide="minus-circle" style="width: 18px; height: 18px;"></i></button>
+                    </div>
+                </td>
+            </tr>
+        `;
+    }).join('');
+
+    const content = `
+        <div style="margin-bottom: 2rem; display: flex; justify-content: space-between; align-items: flex-end;">
+            <div>
+                <h1 style="font-size: 1.8rem; margin-bottom: 0.25rem;">Inventory Management</h1>
+                <p style="color: var(--text-muted);">Track supplies, equipment, and safety gear in real-time.</p>
+            </div>
+            <button class="btn btn-primary" onclick="window.showAddItemModal()">
+                <i data-lucide="package-plus" style="width: 18px; height: 18px;"></i>
+                <span>Add Item</span>
+            </button>
+        </div>
+
+        <div class="grid-cards" style="margin-bottom: 2rem;">
+            <div class="stat-card">
+                <div class="stat-icon cyan"><i data-lucide="package"></i></div>
+                <div class="stat-info">
+                    <h4>Total Items</h4>
+                    <h2>${items.length}</h2>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon ${lowStockCount > 0 ? 'orange' : 'green'}"><i data-lucide="alert-triangle"></i></div>
+                <div class="stat-info">
+                    <h4>Low Stock Alerts</h4>
+                    <h2 style="color: ${lowStockCount > 0 ? 'var(--warning)' : 'var(--success)'};">${lowStockCount}</h2>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon blue"><i data-lucide="refresh-cw"></i></div>
+                <div class="stat-info">
+                    <h4>Recently Updated</h4>
+                    <h2>2</h2>
+                </div>
+            </div>
+        </div>
+
+        <div class="glass-card" style="padding: 2rem;">
+            <div style="display: flex; gap: 1rem; margin-bottom: 2rem; align-items: center; flex-wrap: wrap;">
+                <div class="header-search" style="flex: 1; min-width: 250px;">
+                    <i data-lucide="search" class="input-icon"></i>
+                    <input type="text" placeholder="Search items..." class="search-input" onkeyup="const v=this.value.toLowerCase(); document.querySelectorAll('.inventory-row').forEach(r => r.style.display = r.innerText.toLowerCase().includes(v) ? '' : 'none')" />
+                </div>
+                <select class="form-input" style="width: auto; appearance: auto; cursor: pointer; padding-left: 1rem;" onchange="const v=this.value; document.querySelectorAll('.inventory-row').forEach(r => r.style.display = (v === 'All' || r.dataset.category === v) ? '' : 'none')">
+                    <option value="All">All Categories</option>
+                    <option value="Consumables">Consumables</option>
+                    <option value="Equipment">Equipment</option>
+                    <option value="Safety">Safety</option>
+                </select>
+            </div>
+
+            <div style="overflow-x: auto;">
+                <table style="width: 100%; border-collapse: collapse; text-align: left;">
+                    <thead>
+                        <tr style="border-bottom: 1px solid var(--border-glass); color: var(--text-muted); font-size: 0.8rem; text-transform: uppercase;">
+                            <th style="padding: 1rem 0.5rem; font-weight: 600;">ID</th>
+                            <th style="padding: 1rem 0.5rem; font-weight: 600;">Item Name</th>
+                            <th style="padding: 1rem 0.5rem; font-weight: 600;">Category</th>
+                            <th style="padding: 1rem 0.5rem; font-weight: 600;">Stock Level</th>
+                            <th style="padding: 1rem 0.5rem; font-weight: 600;">Status</th>
+                            <th style="padding: 1rem 0.5rem; font-weight: 600;">Last Updated</th>
+                            <th style="padding: 1rem 0.5rem; font-weight: 600; text-align: right;">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>${tableRows}</tbody>
+                </table>
+            </div>
+        </div>
+    `;
+    root.innerHTML = renderLayout(content, 'inventory');
+    if (window.lucide) lucide.createIcons();
+}
+
+window.updateStock = function(id, amount) {
+    const items = window.getInventory();
+    const item = items.find(i => i.id === id);
+    if (item) {
+        item.quantity = Math.max(0, item.quantity + amount);
+        item.lastRestocked = new Date().toISOString().split('T')[0];
+        localStorage.setItem('inventory_data', JSON.stringify(items));
+        renderInventory();
+    }
+};
+
+window.showAddItemModal = function() {
+    let modal = document.getElementById('inventory-modal');
+    if (!modal) {
+        modal = document.createElement('div');
+        modal.id = 'inventory-modal';
+        modal.style = "position: fixed; inset: 0; background: rgba(15,23,42,0.8); backdrop-filter: blur(4px); z-index: 100; display: flex; align-items: center; justify-content: center;";
+        document.body.appendChild(modal);
+    }
+    
+    modal.innerHTML = `
+        <div class="glass-card animate-slide-up" style="width: 100%; max-width: 450px; padding: 2.5rem;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; border-bottom: 1px solid var(--border-glass); padding-bottom: 1rem;">
+                <h3 style="font-size: 1.25rem;">Add New Inventory Item</h3>
+                <button type="button" onclick="document.getElementById('inventory-modal').remove()" class="icon-btn"><i data-lucide="x"></i></button>
+            </div>
+            <form id="add-inventory-form">
+                <div class="form-group">
+                    <label class="form-label">Item Name</label>
+                    <input type="text" id="inv-name" class="form-input" placeholder="e.g. Bleach (2L)" style="padding-left: 1rem;" required />
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                    <div class="form-group">
+                        <label class="form-label">Category</label>
+                        <select id="inv-category" class="form-input" style="padding-left: 1rem; appearance: auto;" required>
+                            <option value="Consumables">Consumables</option>
+                            <option value="Equipment">Equipment</option>
+                            <option value="Safety">Safety</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Unit</label>
+                        <input type="text" id="inv-unit" class="form-input" placeholder="Liters / Pcs" style="padding-left: 1rem;" required />
+                    </div>
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                    <div class="form-group">
+                        <label class="form-label">Initial Quantity</label>
+                        <input type="number" id="inv-qty" class="form-input" value="0" style="padding-left: 1rem;" required />
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Min Threshold</label>
+                        <input type="number" id="inv-min" class="form-input" value="5" style="padding-left: 1rem;" required />
+                    </div>
+                </div>
+                <div style="display: flex; justify-content: flex-end; gap: 1rem; margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--border-glass);">
+                    <button type="button" class="btn" onclick="document.getElementById('inventory-modal').remove()" style="background: transparent; border: 1px solid var(--border-glass); color: var(--text-main);">Cancel</button>
+                    <button type="submit" class="btn btn-primary" style="padding: 0.75rem 2rem;">Save Item</button>
+                </div>
+            </form>
+        </div>
+    `;
+    
+    if (window.lucide) lucide.createIcons();
+    
+    document.getElementById('add-inventory-form').addEventListener('submit', e => {
+        e.preventDefault();
+        const items = window.getInventory();
+        const newItem = {
+            id: 'INV' + String(items.length + 1).padStart(3, '0'),
+            name: document.getElementById('inv-name').value,
+            category: document.getElementById('inv-category').value,
+            quantity: parseFloat(document.getElementById('inv-qty').value) || 0,
+            unit: document.getElementById('inv-unit').value,
+            minThreshold: parseFloat(document.getElementById('inv-min').value) || 0,
+            lastRestocked: new Date().toISOString().split('T')[0]
+        };
+        items.push(newItem);
+        localStorage.setItem('inventory_data', JSON.stringify(items));
+        document.getElementById('inventory-modal').remove();
+        renderInventory();
+    });
+};
+
+function renderCashBook() {
+    const root = document.getElementById('app-root');
+    const entries = window.getCashBook();
+    
+    let totalIncome = 0;
+    let totalExpense = 0;
+    let runningBalance = 0;
+
+    const tableRows = entries.map(entry => {
+        runningBalance = runningBalance + (entry.income || 0) - (entry.expense || 0);
+        totalIncome += (entry.income || 0);
+        totalExpense += (entry.expense || 0);
+
+        return `
+            <tr style="border-bottom: 1px solid var(--border-glass);">
+                <td style="padding: 1.25rem 0.5rem; color: var(--text-muted); font-size: 0.9rem;">${entry.date}</td>
+                <td style="padding: 1.25rem 0.5rem; font-weight: 500;">${entry.description}</td>
+                <td style="padding: 1.25rem 0.5rem; color: var(--success); font-weight: 600;">${entry.income > 0 ? 'Rs. ' + entry.income.toLocaleString() : '-'}</td>
+                <td style="padding: 1.25rem 0.5rem; color: var(--danger); font-weight: 600;">${entry.expense > 0 ? 'Rs. ' + entry.expense.toLocaleString() : '-'}</td>
+                <td style="padding: 1.25rem 0.5rem; font-weight: 700; color: var(--primary);">Rs. ${runningBalance.toLocaleString()}</td>
+            </tr>
+        `;
+    }).join('');
+
+    const content = `
+        <div style="margin-bottom: 2rem; display: flex; justify-content: space-between; align-items: flex-end;">
+            <div>
+                <h1 style="font-size: 1.8rem; margin-bottom: 0.25rem;">මුදල් පොත (Cash Book)</h1>
+                <p style="color: var(--text-muted);">ඔබගේ දෛනික ලැබීම් සහ ගෙවීම් පවත්වාගෙන යන්න.</p>
+            </div>
+            <button class="btn btn-primary" onclick="window.showAddCashEntryModal()">
+                <i data-lucide="plus-circle" style="width: 18px; height: 18px;"></i>
+                <span>නව ඇතුළත් කිරීමක්</span>
+            </button>
+        </div>
+
+        <div class="grid-cards" style="margin-bottom: 2rem;">
+            <div class="stat-card">
+                <div class="stat-icon green"><i data-lucide="trending-up"></i></div>
+                <div class="stat-info">
+                    <h4>මුළු ලැබීම් (Total In)</h4>
+                    <h2 style="color: var(--success);">Rs. ${totalIncome.toLocaleString()}</h2>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon orange"><i data-lucide="trending-down"></i></div>
+                <div class="stat-info">
+                    <h4>මුළු ගෙවීම් (Total Out)</h4>
+                    <h2 style="color: var(--danger);">Rs. ${totalExpense.toLocaleString()}</h2>
+                </div>
+            </div>
+            <div class="stat-card" style="border: 1px solid var(--primary);">
+                <div class="stat-icon cyan"><i data-lucide="wallet"></i></div>
+                <div class="stat-info">
+                    <h4>වත්මන් ශේෂය (Balance)</h4>
+                    <h2>Rs. ${runningBalance.toLocaleString()}</h2>
+                </div>
+            </div>
+        </div>
+
+        <div class="glass-card" style="padding: 2rem;">
+            <div style="overflow-x: auto;">
+                <table style="width: 100%; border-collapse: collapse; text-align: left;">
+                    <thead>
+                        <tr style="border-bottom: 1px solid var(--border-glass); color: var(--text-muted); font-size: 0.85rem; text-transform: uppercase;">
+                            <th style="padding: 1rem 0.5rem; font-weight: 600;">දිනය (Date)</th>
+                            <th style="padding: 1rem 0.5rem; font-weight: 600;">විස්තරය (Description)</th>
+                            <th style="padding: 1rem 0.5rem; font-weight: 600;">ලැබීම් (In)</th>
+                            <th style="padding: 1rem 0.5rem; font-weight: 600;">ගෙවීම් (Out)</th>
+                            <th style="padding: 1rem 0.5rem; font-weight: 600;">ශේෂය (Balance)</th>
+                        </tr>
+                    </thead>
+                    <tbody>${tableRows}</tbody>
+                </table>
+            </div>
+        </div>
+    `;
+    root.innerHTML = renderLayout(content, 'cashbook');
+    if (window.lucide) lucide.createIcons();
+}
+
+window.showAddCashEntryModal = function() {
+    let modal = document.getElementById('cashbook-modal');
+    if (!modal) {
+        modal = document.createElement('div');
+        modal.id = 'cashbook-modal';
+        modal.style = "position: fixed; inset: 0; background: rgba(15,23,42,0.8); backdrop-filter: blur(4px); z-index: 100; display: flex; align-items: center; justify-content: center;";
+        document.body.appendChild(modal);
+    }
+    
+    modal.innerHTML = `
+        <div class="glass-card animate-slide-up" style="width: 100%; max-width: 450px; padding: 2.5rem;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+                <h3 style="font-size: 1.25rem;">නව ඇතුළත් කිරීමක් (New Entry)</h3>
+                <button type="button" onclick="document.getElementById('cashbook-modal').remove()" class="icon-btn"><i data-lucide="x"></i></button>
+            </div>
+            <form id="add-cash-form">
+                <div class="form-group">
+                    <label class="form-label">දිනය (Date)</label>
+                    <input type="date" id="cash-date" class="form-input" style="padding-left: 1rem; color-scheme: dark;" value="${new Date().toISOString().split('T')[0]}" required />
+                </div>
+                <div class="form-group">
+                    <label class="form-label">විස්තරය (Description)</label>
+                    <input type="text" id="cash-desc" class="form-input" placeholder="උදා: අත්තිකාරම් මුදල්" style="padding-left: 1rem;" required />
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                    <div class="form-group">
+                        <label class="form-label">මුදල (Amount)</label>
+                        <input type="number" id="cash-amt" class="form-input" placeholder="0.00" style="padding-left: 1rem;" required />
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">වර්ගය (Type)</label>
+                        <select id="cash-type" class="form-input" style="padding-left: 1rem; appearance: auto;" required>
+                            <option value="income">ලැබීම් (Income)</option>
+                            <option value="expense">ගෙවීම් (Expense)</option>
+                        </select>
+                    </div>
+                </div>
+                <div style="display: flex; justify-content: flex-end; gap: 1rem; margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--border-glass);">
+                    <button type="button" class="btn" onclick="document.getElementById('cashbook-modal').remove()" style="background: transparent; border: 1px solid var(--border-glass); color: var(--text-main);">අවලංගු කරන්න</button>
+                    <button type="submit" class="btn btn-primary" style="padding: 0.75rem 2rem;">සුරකින්න (Save)</button>
+                </div>
+            </form>
+        </div>
+    `;
+    
+    if (window.lucide) lucide.createIcons();
+    
+    document.getElementById('add-cash-form').addEventListener('submit', e => {
+        e.preventDefault();
+        const entries = window.getCashBook();
+        const type = document.getElementById('cash-type').value;
+        const amt = parseFloat(document.getElementById('cash-amt').value) || 0;
+        
+        const newEntry = {
+            date: document.getElementById('cash-date').value,
+            description: document.getElementById('cash-desc').value,
+            income: type === 'income' ? amt : 0,
+            expense: type === 'expense' ? amt : 0
+        };
+        
+        entries.push(newEntry);
+        localStorage.setItem('cashbook_data', JSON.stringify(entries));
+        document.getElementById('cashbook-modal').remove();
+        renderCashBook();
+    });
+};
+
 // --- SETUP ROUTER ---
 const routes = {
     '': renderLogin,
@@ -1501,7 +1872,9 @@ const routes = {
     '#/staff': renderStaffRegister,
     '#/staff/new': renderAddStaff,
     '#/payroll': renderPayroll,
-    '#/settings': renderSettings
+    '#/settings': renderSettings,
+    '#/inventory': renderInventory,
+    '#/cashbook': renderCashBook
 };
 
 // --- INITIALIZE ---
